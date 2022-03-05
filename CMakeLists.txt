@@ -17,6 +17,7 @@ add_subdirectory("source/gRenderKernel" "gRenderKernel")
 add_subdirectory("source/gRenderToFile" "gRenderToFile")
 add_subdirectory("source/gResample" "gResample")
 add_subdirectory("source/gSprayDeposit" "gSprayDeposit")
+add_subdirectory("source/gHierarchyVolume" "gHierarchyVolume")
 
 # GVDB samples using OptiX, not built by default.
 # To enable these samples, set GVDB_BUILD_OPTIX_SAMPLES to ON before configuring CMake.

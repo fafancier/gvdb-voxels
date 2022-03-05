@@ -1070,7 +1070,7 @@ void StartCuda ( int devsel, CUcontext ctxsel, CUdevice& dev, CUcontext& ctx, CU
 		cuDeviceGetAttribute(&pi, CU_DEVICE_ATTRIBUTE_MAXIMUM_TEXTURE3D_DEPTH, dev_id);
 		if (verbose) gprintf("Max. texture3D depth: %d\n", pi);
 
-		if (verbose) gprintf ( "   %d. %s\n", n, name );
+		if (verbose) gprintf ( " Device   %d. %s\n", n, name );
 	}
 
 	if (devsel == GVDB_DEV_CURRENT) {

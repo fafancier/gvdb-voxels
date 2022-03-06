@@ -10,17 +10,20 @@ project(${PROJECT_NAME} LANGUAGES CUDA CXX C)
 # being called from a build_all script), import the GVDB project directly:
 if(NOT TARGET gvdb)
     # One fast way to add GVDB as a build dependency of the project is to add its subdirectory as follows:
-    add_subdirectory("../gvdb_library" "$CMAKE_CURRENT_BINARY_DIR}/../gvdb_library")
+    add_subdirectory("../gvdb_library" "${CMAKE_CURRENT_BINARY_DIR}/../gvdb_library")
     # Alternatively, if GVDB has already been built, then we can import its GVDBConfig.cmake list file:
     # find_package(GVDB CONFIG REQUIRED
     #    PATHS "${CMAKE_CURRENT_BINARY_DIR}/../gvdb_library")
 endif()
 
+message("PATH "   "${CMAKE_CURRENT_SOURCE_DIR}/../sample_utils/GL")
+
+LINK_DIRECTORIES("${CMAKE_CURRENT_SOURCE_DIR}/../sample_utils/GL") 
 # Main project
 add_executable(${PROJECT_NAME} main_hierarchy_volume.cpp)
 
 # Link with GVDB:
-target_link_libraries(${PROJECT_NAME} gvdb)
+target_link_libraries(${PROJECT_NAME} gvdb glfw3) 
 
 # Tell Visual Studio to set its debugger working directory to the executable directory:
 set_property(TARGET ${PROJECT_NAME}
@@ -28,16 +31,16 @@ set_property(TARGET ${PROJECT_NAME}
 
 
 # Sample-specific requirements:
-set ( REQUIRE_OPENGL "0" )
+set ( REQUIRE_OPENGL "1" )
 set ( REQUIRE_PNG "1" )
 set ( REQUIRE_TGA "0" )
-set ( REQUIRE_GLEW "0" )
+set ( REQUIRE_GLEW "1" )
 set ( REQUIRE_MAIN "0" )
 set ( REQUIRE_NVGUI "0" )
 # Tell NVGUI to use GVDB's vector and camera classes:
 target_compile_definitions(${PROJECT_NAME}
     PRIVATE USE_GVDB="1"
-            BUILD_OPENGL="0") # Build with GVDB's OpenGL utilities
+            BUILD_OPENGL="1") # Build with GVDB's OpenGL utilities
 
 set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/../sample_utils")
 find_package(Utils REQUIRED)
@@ -52,6 +55,16 @@ if ( NOT DEFINED ASSET_PATH )
 endif()
 target_compile_definitions(${PROJECT_NAME}
     PRIVATE ASSET_PATH="${ASSET_PATH}/")
+
+
+
+FILE(GLOB Plugin_Runtime_Release_DLL_FILES  CONFIGURE_DEPENDS 
+${CMAKE_CURRENT_SOURCE_DIR}/../sample_utils/GL/*.dll   ) 
+
+message("Plugin_Runtime_Release_DLL_FILES "   "${Plugin_Runtime_Release_DLL_FILES}"   "${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo")
+
+file(COPY ${Plugin_Runtime_Release_DLL_FILES} DESTINATION  "${CMAKE_CURRENT_BINARY_DIR}/RelWithDebInfo")
+
 
 # Finally, copy the GVDB library itself to the executable directory (this also adds
 # a source-level dependency on gvdbCopy, which makes sure the files are copied correctly)

@@ -2373,7 +2373,7 @@ void VolumeGVDB::Configure ( int q4, int q3, int q2, int q1, int q0 )
 	n[3] = cnt;		cnt >>= 1;
 	n[4] = cnt;
 	
-	Configure ( 5, r, n );	
+	Configure ( 3, r, n );	
 }
 
 // Configure VDB tree (N-level)
@@ -3389,6 +3389,7 @@ int VolumeGVDB::ActivateRegionFromAux (Extents& e, int auxid, uchar dt, float vt
 					if (vset > vthresh) { 
 						pos.Set(x, y, z); pos *= e.cover;
 						leaf = ActivateSpaceAtLevel(e.lev - 1, pos); cnt++; 
+						//printf("(x:%d, y:%d, z%d)\n", x, y, z);
 					}
 				}
 	} break;
@@ -3400,6 +3401,7 @@ int VolumeGVDB::ActivateRegionFromAux (Extents& e, int auxid, uchar dt, float vt
 					if (vset > vthresh) {
 						pos.Set(x, y, z); pos *= e.cover;
 						leaf = ActivateSpaceAtLevel(e.lev - 1, pos); cnt++;
+						//printf("(x:%d, y:%d, z%d)\n", x, y, z);
 					}
 				}
 	} break;
